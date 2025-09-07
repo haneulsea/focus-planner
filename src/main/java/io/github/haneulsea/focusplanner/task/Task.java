@@ -14,12 +14,10 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    private String description;
-
     @Column(nullable = false)
     private LocalTime startTime;
 
     @Column(nullable = false)
     private LocalTime endTime;
-    
+
 }
