@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class TaskRequestDTO {
+public class TaskRequest {
 
     @NotBlank(message = "Title must not be blank")
     private String title;

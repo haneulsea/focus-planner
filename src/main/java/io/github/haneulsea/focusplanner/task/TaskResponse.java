@@ -7,11 +7,11 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class TaskResponseDTO {
+public class TaskResponse {
 
     private int id;
     private String title;
     private LocalTime startTime;
     private LocalTime endTime;
-    
+
 }
