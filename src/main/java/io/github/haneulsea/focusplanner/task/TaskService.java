@@ -16,15 +16,17 @@ public class TaskService {
     }
 
     public TaskResponse createTask(TaskRequest taskRequest) {
-        Task entity = taskMapper.toEntity(taskRequest);
-        Task saved = taskRepository.save(entity);
-        return taskMapper.toResponse(saved);
+        Task task = taskMapper.toEntity(taskRequest);
+        Task savedTask = taskRepository.save(task);
+
+        return taskMapper.toResponse(savedTask);
     }
 
     public TaskResponse getTaskById(Integer id) {
-        Task entity = taskRepository.findById(id)
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
-        return taskMapper.toResponse(entity);
+
+        return taskMapper.toResponse(task);
     }
 
     public List<TaskResponse> getAllTasks() {
@@ -32,6 +34,16 @@ public class TaskService {
                 .stream() // Learn more about streams
                 .map(taskMapper::toResponse) // Learn more about :: syntax
                 .toList(); // Learn more about this method
+    }
+
+    public TaskResponse updateTaskById(Integer id, TaskRequest taskRequest) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        taskMapper.updateEntity(taskRequest, task);
+        Task savedTask = taskRepository.save(task);
+
+        return taskMapper.toResponse(savedTask);
     }
 
     public void deleteTaskById(Integer id) {
