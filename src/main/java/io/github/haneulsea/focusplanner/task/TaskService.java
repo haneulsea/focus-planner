@@ -47,7 +47,10 @@ public class TaskService {
     }
 
     public void deleteTaskById(Integer id) {
-        this.taskRepository.deleteById(id);
+        taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        taskRepository.deleteById(id);
     }
 
 }
