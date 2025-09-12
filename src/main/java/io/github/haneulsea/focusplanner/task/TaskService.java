@@ -22,18 +22,18 @@ public class TaskService {
         return taskMapper.toResponse(savedTask);
     }
 
-    public TaskResponse getTaskById(Integer id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-
-        return taskMapper.toResponse(task);
-    }
-
     public List<TaskResponse> getAllTasks() {
         return taskRepository.findAll()
                 .stream() // Learn more about streams
                 .map(taskMapper::toResponse) // Learn more about :: syntax
                 .toList(); // Learn more about this method
+    }
+
+    public TaskResponse getTaskById(Integer id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        return taskMapper.toResponse(task);
     }
 
     public TaskResponse updateTaskById(Integer id, TaskRequest taskRequest) {
