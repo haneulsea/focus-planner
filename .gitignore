@@ -4,6 +4,10 @@ target/
 !**/src/test/**/target/
 tasks.md
 
+### Database ###
+*.mv.db
+*.trace.db
+
 ### STS ###
 .apt_generated
 .classpath
