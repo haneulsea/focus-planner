@@ -3,6 +3,7 @@ package io.github.haneulsea.focusplanner.task;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -27,6 +28,11 @@ public class TaskController {
     @PostMapping("/")
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
+    }
+
+    @PatchMapping("/{id}")
+    public Task updateTaskById(@PathVariable Integer id, @RequestBody Map<String, Object> updates) {
+        return taskService.updateTaskById(id, updates);
     }
 
 }
