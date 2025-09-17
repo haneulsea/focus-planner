@@ -8,47 +8,38 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final TaskMapper taskMapper;
 
-    public TaskService(TaskRepository taskRepository, TaskMapper taskMapper) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.taskMapper = taskMapper;
     }
 
-    public TaskResponse createTask(TaskRequest taskRequest) {
-        Task task = taskMapper.toEntity(taskRequest);
-        Task savedTask = taskRepository.save(task);
-
-        return taskMapper.toResponse(savedTask);
+    public Task createTask(Task task) {
+        return taskRepository.save(task);
     }
 
-    public List<TaskResponse> getAllTasks() {
-        return taskRepository.findAll()
-                .stream() // Learn more about streams
-                .map(taskMapper::toResponse) // Learn more about :: syntax
-                .toList(); // Learn more about this method
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
 
-    public TaskResponse getTaskById(Integer id) {
+    public Task getTaskById(Integer id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found while getting by id " + id));
+    }
+
+    public Task updateTaskById(Integer id, Task updatedTask) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new RuntimeException("Task not found while updating by id " + id));
 
-        return taskMapper.toResponse(task);
-    }
+        task.setTitle(updatedTask.getTitle());
+        task.setStartTime(updatedTask.getStartTime());
+        task.setEndTime(updatedTask.getEndTime());
 
-    public TaskResponse updateTaskById(Integer id, TaskRequest taskRequest) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-
-        taskMapper.updateEntity(taskRequest, task);
-        Task savedTask = taskRepository.save(task);
-
-        return taskMapper.toResponse(savedTask);
+        return taskRepository.save(task);
     }
 
     public void deleteTaskById(Integer id) {
         taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new RuntimeException("Task not found while deleting by id " + id));
 
         taskRepository.deleteById(id);
     }
