@@ -2,7 +2,9 @@ package io.github.haneulsea.focusplanner.task;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TaskService {
@@ -26,13 +28,18 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Task not found while getting by id " + id));
     }
 
-    public Task updateTaskById(Integer id, Task updatedTask) {
+    public Task updateTaskById(Integer id, Map<String, Object> updates) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found while updating by id " + id));
 
-        task.setTitle(updatedTask.getTitle());
-        task.setStartTime(updatedTask.getStartTime());
-        task.setEndTime(updatedTask.getEndTime());
+        for (String key : updates.keySet()) {
+            switch (key) {
+                case "title" -> task.setTitle((String) updates.get(key));
+                case "startTime" -> task.setStartTime(LocalTime.parse((String) updates.get(key)));
+                case "endTime" -> task.setEndTime(LocalTime.parse((String) updates.get(key)));
+                default -> throw new IllegalArgumentException("Unknown field: " + key);
+            }
+        }
 
         return taskRepository.save(task);
     }
