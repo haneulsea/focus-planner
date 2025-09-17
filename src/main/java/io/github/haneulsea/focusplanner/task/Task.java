@@ -2,6 +2,7 @@ package io.github.haneulsea.focusplanner.task;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
 
@@ -16,11 +17,11 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    @NotBlank(message = "Time is required")
+    @NotNull(message = "Time is required")
     @Column(nullable = false)
     private LocalTime startTime;
 
-    @NotBlank(message = "Time is required")
+    @NotNull(message = "Time is required")
     @Column(nullable = false)
     private LocalTime endTime;
 
