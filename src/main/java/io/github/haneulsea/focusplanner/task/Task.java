@@ -1,5 +1,6 @@
 package io.github.haneulsea.focusplanner.task;
 
+import io.github.haneulsea.focusplanner.planner.Planner;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +25,10 @@ public class Task {
     @NotNull(message = "Time is required")
     @Column(nullable = false)
     private LocalTime endTime;
+
+    @ManyToOne
+    @JoinColumn(name = "planner_id", nullable = false)
+    private Planner planner;
 
     public Task() {
     }
