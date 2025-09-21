@@ -3,8 +3,10 @@ package io.github.haneulsea.focusplanner.task;
 import io.github.haneulsea.focusplanner.planner.Planner;
 import io.github.haneulsea.focusplanner.planner.PlannerRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class TaskService {
         this.plannerRepository = plannerRepository;
     }
 
+    @Transactional
     public Task createTask(Task task, Integer plannerId) {
         Planner planner = plannerRepository
                 .findById(plannerId)
@@ -29,20 +32,27 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<Task> getAllTasks(Integer plannerId) {
+        Planner planner = plannerRepository
+                .findById(plannerId)
+                .orElseThrow(() -> new RuntimeException("Planner not found while getting by id " + plannerId));
+
+        return new ArrayList<>(planner.getTasks());
     }
 
-    public Task getTaskById(Integer id) {
+    @Transactional(readOnly = true)
+    public Task getTaskById(Integer taskId) {
         return taskRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found while getting by id " + id));
+                .findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found while getting by id " + taskId));
     }
 
-    public Task updateTaskById(Integer id, Map<String, Object> updates) {
+    @Transactional
+    public Task updateTaskById(Integer taskId, Map<String, Object> updates) {
         Task task = taskRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found while updating by id " + id));
+                .findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found while updating by id " + taskId));
 
         for (String key : updates.keySet()) {
             switch (key) {
@@ -56,12 +66,13 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public void deleteTaskById(Integer id) {
+    @Transactional
+    public void deleteTaskById(Integer taskId) {
         taskRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found while deleting by id " + id));
+                .findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found while deleting by id " + taskId));
 
-        taskRepository.deleteById(id);
+        taskRepository.deleteById(taskId);
     }
 
 }
