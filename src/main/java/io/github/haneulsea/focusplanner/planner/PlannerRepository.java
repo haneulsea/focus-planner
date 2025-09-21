@@ -1,5 +1,7 @@
 package io.github.haneulsea.focusplanner.planner;
 
-public interface PlannerRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PlannerRepository extends JpaRepository<Planner, Integer> {
 
 }
