@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/planners/{plannerId}/tasks")
 public class TaskController {
 
     private final TaskService taskService;
@@ -16,28 +16,33 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    public List<Task> getAllTasks(@PathVariable Integer plannerId) {
+        return taskService.getAllTasks(plannerId);
     }
 
-    @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Integer id) {
-        return taskService.getTaskById(id);
+    @GetMapping("/{taskId}")
+    public Task getTaskById(@PathVariable Integer plannerId,
+                            @PathVariable Integer taskId) {
+        return taskService.getTaskById(taskId);
     }
 
-    @PostMapping("/")
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+    @PostMapping
+    public Task createTask(@PathVariable Integer plannerId,
+                           @RequestBody Task task) {
+        return taskService.createTask(task, plannerId);
     }
 
-    @PatchMapping("/{id}")
-    public Task updateTaskById(@PathVariable Integer id, @RequestBody Map<String, Object> updates) {
-        return taskService.updateTaskById(id, updates);
+    @PatchMapping("/{taskId}")
+    public Task updateTaskById(@PathVariable Integer plannerId,
+                               @PathVariable Integer taskId,
+                               @RequestBody Map<String, Object> updates) {
+        return taskService.updateTaskById(taskId, updates);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTaskById(@PathVariable Integer id) {
-        taskService.deleteTaskById(id);
+    @DeleteMapping("/{taskId}")
+    public void deleteTaskById(@PathVariable Integer plannerId,
+                               @PathVariable Integer taskId) {
+        taskService.deleteTaskById(taskId);
     }
 
 }
