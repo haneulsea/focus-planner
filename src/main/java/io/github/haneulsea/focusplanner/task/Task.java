@@ -61,4 +61,12 @@ public class Task {
         this.endTime = endTime;
     }
 
+    public Planner getPlanner() {
+        return planner;
+    }
+
+    public void setPlanner(Planner planner) {
+        this.planner = planner;
+    }
+
 }
