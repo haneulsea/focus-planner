@@ -1,5 +1,6 @@
 package io.github.haneulsea.focusplanner.task;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.github.haneulsea.focusplanner.planner.Planner;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +29,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "planner_id", nullable = false)
+    @JsonBackReference
     private Planner planner;
 
     public Task() {

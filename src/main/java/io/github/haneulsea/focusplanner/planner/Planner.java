@@ -1,5 +1,6 @@
 package io.github.haneulsea.focusplanner.planner;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.haneulsea.focusplanner.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public class Planner {
     private String title;
 
     @OneToMany(mappedBy = "planner", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonManagedReference
     private List<Task> tasks = new ArrayList<>();
 
     public Planner() {
