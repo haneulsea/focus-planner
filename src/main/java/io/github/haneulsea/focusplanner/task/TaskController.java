@@ -15,6 +15,12 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @PostMapping
+    public Task createTask(@PathVariable Integer plannerId,
+                           @RequestBody Task task) {
+        return taskService.createTask(task, plannerId);
+    }
+
     @GetMapping
     public List<Task> getAllTasks(@PathVariable Integer plannerId) {
         return taskService.getAllTasks(plannerId);
@@ -23,26 +29,20 @@ public class TaskController {
     @GetMapping("/{taskId}")
     public Task getTaskById(@PathVariable Integer plannerId,
                             @PathVariable Integer taskId) {
-        return taskService.getTaskById(taskId);
-    }
-
-    @PostMapping
-    public Task createTask(@PathVariable Integer plannerId,
-                           @RequestBody Task task) {
-        return taskService.createTask(task, plannerId);
+        return taskService.getTaskById(taskId, plannerId);
     }
 
     @PatchMapping("/{taskId}")
     public Task updateTaskById(@PathVariable Integer plannerId,
                                @PathVariable Integer taskId,
                                @RequestBody Map<String, Object> updates) {
-        return taskService.updateTaskById(taskId, updates);
+        return taskService.updateTaskById(taskId, updates, plannerId);
     }
 
     @DeleteMapping("/{taskId}")
     public void deleteTaskById(@PathVariable Integer plannerId,
                                @PathVariable Integer taskId) {
-        taskService.deleteTaskById(taskId);
+        taskService.deleteTaskById(taskId, plannerId);
     }
 
 }
