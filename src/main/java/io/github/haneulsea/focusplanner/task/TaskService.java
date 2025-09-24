@@ -42,17 +42,27 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public Task getTaskById(Integer taskId) {
-        return taskRepository
+    public Task getTaskById(Integer taskId, Integer plannerId) {
+        Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found while getting by id " + taskId));
+
+        if (!task.getPlanner().getId().equals(plannerId)) {
+            throw new RuntimeException("Task not found in planner id " + plannerId);
+        }
+
+        return task;
     }
 
     @Transactional
-    public Task updateTaskById(Integer taskId, Map<String, Object> updates) {
+    public Task updateTaskById(Integer taskId, Map<String, Object> updates, Integer plannerId) {
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found while updating by id " + taskId));
+
+        if (!task.getPlanner().getId().equals(plannerId)) {
+            throw new RuntimeException("Task not found in planner id " + plannerId);
+        }
 
         for (String key : updates.keySet()) {
             switch (key) {
@@ -63,16 +73,20 @@ public class TaskService {
             }
         }
 
-        return taskRepository.save(task);
+        return task;
     }
 
     @Transactional
-    public void deleteTaskById(Integer taskId) {
-        taskRepository
+    public void deleteTaskById(Integer taskId, Integer plannerId) {
+        Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found while deleting by id " + taskId));
 
-        taskRepository.deleteById(taskId);
+        if (!task.getPlanner().getId().equals(plannerId)) {
+            throw new RuntimeException("Task not found in planner id " + plannerId);
+        }
+
+        taskRepository.delete(task);
     }
 
 }
