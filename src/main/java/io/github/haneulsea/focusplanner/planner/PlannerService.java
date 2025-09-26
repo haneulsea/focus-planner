@@ -1,10 +1,12 @@
 package io.github.haneulsea.focusplanner.planner;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class PlannerService {
 
     private final PlannerRepository plannerRepository;
