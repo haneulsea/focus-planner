@@ -39,6 +39,7 @@ public class PlannerService {
                 .orElseThrow(() -> new RuntimeException("Planner not found while getting by id " + plannerId));
 
         // Add a loop and switch when more fields are patchable
+        // Example fields: createdAt, completed, etc.
         if (updates.containsKey("title")) {
             planner.setTitle((String) updates.get("title"));
         }
